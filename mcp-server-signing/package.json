@@ -1,0 +1,21 @@
+{
+  "name": "scopeblind-cedar-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server with Cedar WASM policy engine and signed receipts",
+  "type": "module",
+  "scripts": {
+    "start": "npx protect-mcp --cedar ./policy.cedar --enforce -- node server.js",
+    "start:shadow": "npx protect-mcp --cedar ./policy.cedar -- node server.js",
+    "test": "./verify.sh",
+    "receipts": "npx protect-mcp receipts",
+    "verify": "npx @veritasacta/verify .protect-mcp-receipts.jsonl",
+    "bundle": "npx protect-mcp bundle --format audit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "optionalDependencies": {
+    "@cedar-policy/cedar-wasm": "^4.9.1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "curl -s -X POST http://127.0.0.1:9377/hook -H 'Content-Type: application/json' -d '{\"hook\":\"PreToolUse\",\"tool\":\"$TOOL_NAME\"}'"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "curl -s -X POST http://127.0.0.1:9377/hook -H 'Content-Type: application/json' -d '{\"hook\":\"PostToolUse\",\"tool\":\"$TOOL_NAME\"}'"
+      }
+    ]
+  }
+}

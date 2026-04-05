@@ -1,0 +1,4 @@
+node_modules/
+.protect-mcp-receipts.jsonl
+dist/
+*.log

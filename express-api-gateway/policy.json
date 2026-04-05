@@ -1,0 +1,17 @@
+{
+  "default": "allow",
+  "rules": [
+    {
+      "tool": "delete_account",
+      "decision": "deny",
+      "reason": "Destructive operations require human approval"
+    },
+    {
+      "tool": "send_email",
+      "decision": "allow",
+      "conditions": {
+        "max_per_minute": 5
+      }
+    }
+  ]
+}
