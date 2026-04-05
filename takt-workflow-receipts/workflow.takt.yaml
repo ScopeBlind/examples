@@ -1,0 +1,175 @@
+# TAKT Workflow: plan-implement-review with cryptographic receipts
+#
+# This workflow defines three steps that a provider (Claude, Codex, etc.)
+# executes in sequence. protect-mcp intercepts tool calls at the provider
+# layer, evaluates Cedar policies, signs decisions with Ed25519, and
+# appends receipts to .protect-mcp-receipts.jsonl.
+#
+# TAKT itself is unaware of protect-mcp. This is Level 1 integration:
+# external tooling, zero changes to TAKT core. The receipts are generated
+# by the provider's hook configuration, not by TAKT.
+#
+# To use:
+#   1. Start protect-mcp:  npx protect-mcp serve --enforce --cedar ./policies
+#   2. Run this workflow:   takt run workflow.takt.yaml --task "<your task>"
+#
+# Receipt signing requires the protect-mcp hook server running on port 9377.
+# Without it, TAKT runs normally -- you just won't get signed receipts.
+#
+# For TAKT YAML format reference, see: https://github.com/nrslib/takt
+
+name: plan-implement-review
+initial_step: research
+max_movements: 15
+
+# -----------------------------------------------------------------
+# Steps
+# -----------------------------------------------------------------
+# Each step maps to a phase of the development workflow.
+# protect-mcp signs tool calls made by each step's provider.
+# The Cedar policy in policies/workflow.cedar controls what
+# operations are allowed at each phase.
+
+steps:
+  # Step 1: Research
+  # Read-only exploration. The agent examines the codebase, searches
+  # for patterns, and builds a plan. Cedar policy allows Read, Glob,
+  # Grep, and Bash (non-destructive commands only).
+  - name: research
+    persona: planner
+    edit: false
+    required_permission_mode: readonly
+    allowed_tools:
+      - Read
+      - Glob
+      - Grep
+      - Bash
+    instruction_template: |
+      Analyze the codebase to understand the current implementation.
+      Read relevant files, search for patterns, and identify what
+      needs to change.
+
+      Task: {task}
+
+      Produce a structured plan with:
+      - Files to modify
+      - Changes required in each file
+      - Test strategy
+      - Risk assessment
+
+      Do NOT modify any files in this step.
+    rules:
+      - condition: Research complete and plan documented
+        next: implement
+
+  # Step 2: Implement
+  # Write access enabled. The agent applies the plan from the research
+  # step. Cedar policy allows Edit and Write to project paths, and
+  # Bash for running tests. Destructive operations (rm -rf, git push,
+  # deploy) are denied by Cedar.
+  - name: implement
+    persona: coder
+    edit: true
+    required_permission_mode: edit
+    pass_previous_response: true
+    allowed_tools:
+      - Read
+      - Glob
+      - Grep
+      - Edit
+      - Write
+      - Bash
+    instruction_template: |
+      Implement the changes described in the research plan.
+
+      Previous analysis:
+      {previous_response}
+
+      Requirements:
+      - Follow the plan from the research step
+      - Run tests after each significant change
+      - Do NOT push to remote or deploy
+      - Do NOT delete files unless the plan specifies it
+
+      When implementation and tests pass, move to review.
+    rules:
+      - condition: Implementation complete and tests pass
+        next: review
+      - condition: Blocked or needs more research
+        next: research
+
+  # Step 3: Review
+  # Read-only code review. The agent inspects the changes, checks for
+  # issues, and either approves or sends back for revision. Cedar
+  # policy restricts this step to read-only operations.
+  - name: review
+    persona: reviewer
+    edit: false
+    required_permission_mode: readonly
+    pass_previous_response: true
+    allowed_tools:
+      - Read
+      - Glob
+      - Grep
+      - Bash
+    instruction_template: |
+      Review the implementation from the previous step.
+
+      Check for:
+      - Correctness: does the code do what was planned?
+      - Tests: are they sufficient and passing?
+      - Style: does it follow the project conventions?
+      - Security: are there obvious vulnerabilities?
+      - Edge cases: what could go wrong?
+
+      If approved, the workflow is complete.
+      If issues are found, send back to implement with specific feedback.
+    rules:
+      - condition: Approved
+        next: COMPLETE
+      - condition: Needs revision
+        next: implement
+
+# -----------------------------------------------------------------
+# Persona references
+# -----------------------------------------------------------------
+# TAKT resolves persona names from its global or project configuration.
+# These are standard TAKT personas -- no protect-mcp-specific config.
+#
+# To customize personas, create markdown files and reference them:
+#
+#   personas:
+#     planner: ./personas/planner.md
+#     coder: ./personas/coder.md
+#     reviewer: ./personas/reviewer.md
+
+# -----------------------------------------------------------------
+# protect-mcp integration (external -- not part of TAKT YAML)
+# -----------------------------------------------------------------
+# protect-mcp runs as a separate process. Configure the provider to
+# route tool calls through it using hooks.
+#
+# For Claude provider, add to .claude/settings.json:
+#
+#   {
+#     "hooks": {
+#       "PreToolUse": [{
+#         "type": "command",
+#         "command": "curl -s -X POST http://127.0.0.1:9377/hook -H 'Content-Type: application/json' -d '{\"hook\":\"PreToolUse\",\"tool\":\"$TOOL_NAME\"}'"
+#       }],
+#       "PostToolUse": [{
+#         "type": "command",
+#         "command": "curl -s -X POST http://127.0.0.1:9377/hook -H 'Content-Type: application/json' -d '{\"hook\":\"PostToolUse\",\"tool\":\"$TOOL_NAME\"}'"
+#       }]
+#     }
+#   }
+#
+# Or generate this automatically:
+#
+#   npx protect-mcp init-hooks
+#
+# TAKT's security policy must allow stdio MCP transport:
+#
+#   # In ~/.takt/config.yaml or .takt/config.yaml
+#   pieceMcpServers:
+#     stdio: true

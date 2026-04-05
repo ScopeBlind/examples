@@ -11,6 +11,7 @@ Each example uses [protect-mcp](https://npmjs.com/package/protect-mcp) to wrap M
 | [claude-code-hooks](./claude-code-hooks/) | Add protect-mcp as Claude Code hooks. Every tool call gets a signed receipt and Cedar policy check. | ~2 min |
 | [express-api-gateway](./express-api-gateway/) | Wrap an Express-based MCP server with JSON policies and rate limiting. | ~5 min |
 | [mcp-server-signing](./mcp-server-signing/) | Cedar WASM policy engine with per-tool authorization and full audit bundles. | ~10 min |
+| [takt-workflow-receipts](./takt-workflow-receipts/) | Add signed receipts to [TAKT](https://github.com/nrslib/takt) multi-step workflows. Level 1 external integration. | ~5 min |
 
 ## Prerequisites
 
