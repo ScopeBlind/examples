@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![IETF Draft](https://img.shields.io/badge/IETF-draft--farley--acta--signed--receipts-blue)](https://datatracker.ietf.org/doc/draft-farley-acta-signed-receipts/)
+
 # ScopeBlind Examples
 
 Three complete examples showing how to add signed, independently verifiable audit trails to AI agent tool calls.
@@ -44,3 +47,14 @@ This checks every signature without contacting any server. The verifier is issue
 - [protect-mcp on npm](https://npmjs.com/package/protect-mcp) -- package documentation
 - [scopeblind/scopeblind-gateway](https://github.com/scopeblind/scopeblind-gateway) -- source code
 - [Cedar language reference](https://docs.cedarpolicy.com/) -- policy language docs
+
+## Ecosystem
+
+- [scopeblind/scopeblind-gateway](https://github.com/scopeblind/scopeblind-gateway) -- protect-mcp source code
+- [VeritasActa/Acta](https://github.com/VeritasActa/Acta) -- open protocol for contestable public records
+- [VeritasActa/drafts](https://github.com/VeritasActa/drafts) -- IETF internet-draft source
+- [protect-mcp on npm](https://www.npmjs.com/package/protect-mcp) -- MCP gateway with Cedar policies and signed receipts
+- [@veritasacta/verify on npm](https://www.npmjs.com/package/@veritasacta/verify) -- issuer-blind receipt verification CLI
+- [acta.today/wiki](https://acta.today/wiki) -- live Knowledge Unit demo
+- [draft-farley-acta-signed-receipts](https://datatracker.ietf.org/doc/draft-farley-acta-signed-receipts/) -- IETF signed receipts draft
+- [draft-farley-acta-knowledge-units](https://datatracker.ietf.org/doc/draft-farley-acta-knowledge-units/) -- IETF knowledge units draft
