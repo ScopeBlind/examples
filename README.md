@@ -54,6 +54,7 @@ This checks every signature without contacting any server. The verifier is issue
 - [VeritasActa/Acta](https://github.com/VeritasActa/Acta) -- open protocol for contestable public records
 - [VeritasActa/drafts](https://github.com/VeritasActa/drafts) -- IETF internet-draft source
 - [protect-mcp on npm](https://www.npmjs.com/package/protect-mcp) -- MCP gateway with Cedar policies and signed receipts
+- [protect-mcp-adk on PyPI](https://pypi.org/project/protect-mcp-adk/) -- Google ADK receipt signing plugin (Python)
 - [@veritasacta/verify on npm](https://www.npmjs.com/package/@veritasacta/verify) -- issuer-blind receipt verification CLI
 - [acta.today/wiki](https://acta.today/wiki) -- live Knowledge Unit demo
 - [draft-farley-acta-signed-receipts](https://datatracker.ietf.org/doc/draft-farley-acta-signed-receipts/) -- IETF signed receipts draft
