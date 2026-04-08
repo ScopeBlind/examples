@@ -1,0 +1,42 @@
+{
+  "payload": {
+    "spec": "draft-farley-acta-signed-receipts-01",
+    "receipt_id": "sha256:ace89c38ff7d7276b8245cc8d020a92150c6f4fd133d0b60b03d90e10e58d276",
+    "type": "tool:execution",
+    "issued_at": "2026-04-08T16:10:01.974Z",
+    "issuer_id": "sb:issuer:91e4d1a4f0f0",
+    "previousReceiptHash": "sha256:178ab43edefbbe99a89e9f2249c2ff995d2ab749ef532dc4a9bf6893ed748f37",
+    "action_ref": "sha256:0985753552dfd9ca60c978d00309c844c512ab0ae20062f9bebeac826f00bbdf",
+    "agentId": "crewai-agent-research-001",
+    "action": {
+      "tool": "execute_api_call",
+      "args_hash": "sha256:1a5798288f34a96ae34a6a08b9be59d78778908f70af1b15c38adab4652346af",
+      "result": {
+        "success": true,
+        "output_hash": "sha256:2235af1846d40d1f72fe78a083c7bc8b8b463f7e6e86ee71ae98d1dd851e6c85",
+        "tokens_used": 1847,
+        "latency_ms": 2340
+      }
+    },
+    "spend": {
+      "amount": 0.5,
+      "currency": "usd"
+    },
+    "extensions": {
+      "scopeblind": {
+        "cedar_decision": "permit",
+        "policy_digest": "sha256:f381122b9014899cffcd2b9ead006ba8f2e2881121010dfef903f5a5db307b3f",
+        "mode": "enforce",
+        "tier": "signed-known",
+        "tool_input_hash": "sha256:1a5798288f34a96ae34a6a08b9be59d78778908f70af1b15c38adab4652346af",
+        "otel_trace_id": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+        "otel_span_id": "e5f6a7b8c9d0e1f2"
+      }
+    }
+  },
+  "signature": {
+    "alg": "EdDSA",
+    "kid": "sb:issuer:91e4d1a4f0f0",
+    "sig": "8159dc4e7cacfdf3e78706f50c3f837729e65c898fb458a2b252d531679064b23939431dcdb38d8a2024697c4672e9ce396947c4f5b6432c2570682cd368580a"
+  }
+}
