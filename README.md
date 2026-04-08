@@ -3,7 +3,7 @@
 
 # ScopeBlind Examples
 
-Three complete examples showing how to add signed, independently verifiable audit trails to AI agent tool calls.
+Complete examples showing how to add signed, independently verifiable audit trails to AI agent tool calls, including cybersecurity use cases for vulnerability disclosure.
 
 Each example uses [protect-mcp](https://npmjs.com/package/protect-mcp) to wrap MCP tool servers with Cedar policies and Ed25519-signed receipts. Every tool call produces a cryptographic receipt that can be verified offline by anyone -- without contacting the original issuer.
 
@@ -15,6 +15,7 @@ Each example uses [protect-mcp](https://npmjs.com/package/protect-mcp) to wrap M
 | [express-api-gateway](./express-api-gateway/) | Wrap an Express-based MCP server with JSON policies and rate limiting. | ~5 min |
 | [mcp-server-signing](./mcp-server-signing/) | Cedar WASM policy engine with per-tool authorization and full audit bundles. | ~10 min |
 | [takt-workflow-receipts](./takt-workflow-receipts/) | Add signed receipts to [TAKT](https://github.com/nrslib/takt) multi-step workflows. Level 1 external integration. | ~5 min |
+| [security-vulnerability-disclosure](./security-vulnerability-disclosure/) | Receipt-signed vulnerability disclosure lifecycle with Cedar governance policies. For AI security agents. | ~10 min |
 
 ## Prerequisites
 
