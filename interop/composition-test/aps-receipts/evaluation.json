@@ -1,0 +1,17 @@
+{
+  "payload": {
+    "receipt_type": "evaluation",
+    "action_ref": "31789af0e4b00d6c3f686ee56b5b361ba4f62055a37d52f6758d671d8ff60139",
+    "agent_id": "agent-composition-test",
+    "delegation_id": "del_7add5af1-0c0",
+    "scope_checked": "tools:api_call",
+    "verdict": "permit",
+    "reason": "Scope authorized by delegation",
+    "timestamp": "2026-04-08T16:29:11.278Z"
+  },
+  "signature": {
+    "alg": "EdDSA",
+    "sig": "c87efc68d0b036afa3f64c9aaa21a0670b960e25fd4dbf62d7401b899f3fed049fb066394c6bd4793be14592d62c77618444d01a192d19532aacb353f1ade701",
+    "kid": "did:aps:z6Mkv1oxS3dr5K9AUc4Tp6LQLJS2XP4sqXuRoHZrYENPpfJU#key-1"
+  }
+}

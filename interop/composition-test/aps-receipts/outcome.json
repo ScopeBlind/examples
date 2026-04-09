@@ -1,0 +1,20 @@
+{
+  "payload": {
+    "receipt_type": "outcome",
+    "action_ref": "31789af0e4b00d6c3f686ee56b5b361ba4f62055a37d52f6758d671d8ff60139",
+    "agent_id": "agent-composition-test",
+    "execution_result": "success",
+    "output_hash": "df7d48f27103e6827c2d5ce43d4c2924e6de6fa87d8b4f18434998527233db6d",
+    "spend_actual": {
+      "amount": 0.5,
+      "currency": "USD"
+    },
+    "executor_signature_alg": "EdDSA",
+    "timestamp": "2026-04-08T16:29:11.483Z"
+  },
+  "signature": {
+    "alg": "EdDSA",
+    "sig": "295508a972080a3eb4c366805ca5bf2d398c13e360936637c1cd43031bbffd37306f2f6d538176a147a67a80b3534253c1db746d7fb2ad5be05819d3dd9e4604",
+    "kid": "did:aps:z6Mkv1oxS3dr5K9AUc4Tp6LQLJS2XP4sqXuRoHZrYENPpfJU#key-1"
+  }
+}

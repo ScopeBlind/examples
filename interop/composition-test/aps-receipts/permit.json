@@ -1,0 +1,22 @@
+{
+  "payload": {
+    "receipt_type": "permit",
+    "action_ref": "31789af0e4b00d6c3f686ee56b5b361ba4f62055a37d52f6758d671d8ff60139",
+    "agent_id": "agent-composition-test",
+    "delegation_id": "del_7add5af1-0c0",
+    "delegation_chain_hash": "d9a0bd84f7f29816d2fab6bba65cf175d597644ddb32b92f9c5e592e7f291efd",
+    "scope_evaluated": "tools:api_call",
+    "spend_authorized": {
+      "amount": 0.5,
+      "currency": "USD"
+    },
+    "verdict": "permit",
+    "evaluator_signature_alg": "EdDSA",
+    "timestamp": "2026-04-08T16:29:11.278Z"
+  },
+  "signature": {
+    "alg": "EdDSA",
+    "sig": "17812d1ebff0fb0c384a06ea1f93e38f193ac533fdc910d5234998240a5eb78ea9cb6aafc3d697e5da841ac4546dfd1a952272756c8364d5427b7a0e5335ff08",
+    "kid": "did:aps:z6Mkv1oxS3dr5K9AUc4Tp6LQLJS2XP4sqXuRoHZrYENPpfJU#key-1"
+  }
+}
