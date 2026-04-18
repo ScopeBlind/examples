@@ -1,0 +1,27 @@
+{
+  "v": 2,
+  "type": "scopeblind:physical_attestation",
+  "algorithm": "ecdsa-p256",
+  "kid": "OkJDtBwaAX1WdEzYEGa4V32cpO8V2M2s5ndhurM87a4",
+  "issuer": "scopeblind:seal:SB-SEAL-001",
+  "issued_at": "2026-04-10T18:00:00Z",
+  "payload": {
+    "type": "scopeblind:physical_attestation",
+    "spec": "draft-farley-acta-signed-receipts-01",
+    "reading": {
+      "temperature_c": 22.4,
+      "humidity_pct": 38,
+      "shock_g": 0.3,
+      "lux": 45000,
+      "latitude": -34.9285,
+      "longitude": 138.6007,
+      "battery_pct": 97
+    },
+    "location_label": "Adelaide, loading area (sun exposure)",
+    "decision": "deny",
+    "policy_id": "cold-chain-wine-premium",
+    "reason": "temp 22.4C > 18.0C limit",
+    "sequence": 5
+  },
+  "signature": "7e02f6855fa2c3915aa9735f285813b2f88a2379350ff35d08b4f9dd552623d0eb80badcef2e53e2d88381266ee5c5e90e25eca152f24f6366863eef7f8bac0c"
+}
