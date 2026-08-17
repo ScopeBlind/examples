@@ -1,12 +1,12 @@
 {
   "payload": {
     "spec": "draft-farley-acta-signed-receipts-01",
-    "receipt_id": "sha256:4fbc5e083ff3578f854ba9e7018f26bf25f43c263fd2c128fe41575dc24298a8",
+    "receipt_id": "sha256:5358b13366d744a34c83e51919d193736a47565e1a4f1513bb5bc74d39afef21",
     "type": "policy:evaluation",
-    "issued_at": "2026-04-08T16:10:01.824Z",
-    "issuer_id": "sb:issuer:91e4d1a4f0f0",
+    "issued_at": "2026-08-17T01:18:21.991Z",
+    "issuer_id": "sb:issuer:93a2146e3977",
     "previousReceiptHash": null,
-    "action_ref": "sha256:0985753552dfd9ca60c978d00309c844c512ab0ae20062f9bebeac826f00bbdf",
+    "action_ref": "31789af0e4b00d6c3f686ee56b5b361ba4f62055a37d52f6758d671d8ff60139",
     "agentId": "crewai-agent-research-001",
     "action": {
       "tool": "execute_api_call",
@@ -18,6 +18,14 @@
       }
     },
     "extensions": {
+      "asm": {
+        "selection_receipt": {
+          "receipt_type": "selection",
+          "receipt_version": "0.1",
+          "selection_id": "5d7e46e7-3997-4db3-90fb-507f4a6d2b62",
+          "digest": "sha256:4c4a9ebb847ff07721862a0f7e214c64606704b1ac31cac5cd6451488e6632e0"
+        }
+      },
       "scopeblind": {
         "cedar_decision": "permit",
         "cedar_diagnostics": [],
@@ -30,7 +38,7 @@
   },
   "signature": {
     "alg": "EdDSA",
-    "kid": "sb:issuer:91e4d1a4f0f0",
-    "sig": "bac12f42fa4cbffa4990ac37722582edc39e02836b45f6eda8d8a01fd8935239c35a959849fc8ff75b7c729490814d275296e2260dc0d0e4ef860b6ed56d290d"
+    "kid": "sb:issuer:93a2146e3977",
+    "sig": "5b59ddfbd1f5b23ac7e988b099c7a0872badf8842529311598a5ceb5b46d54f2ee174f53665e674f5ce2eeb4dc5222d945c2c1152f0c0495f2f0a21d5808330b"
   }
 }

@@ -16,7 +16,7 @@
 
 import { createHash } from 'crypto';
 import { generateKeyPairSync, sign } from 'crypto';
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -54,6 +54,20 @@ function sha256hex(data) {
   return createHash('sha256').update(data).digest('hex');
 }
 
+// --- Pre-call selection artifact ---
+// ASM owns only the choice record. ScopeBlind remains authoritative for its
+// signed authorization and execution receipts, which reference this digest.
+const selectionReceipt = JSON.parse(
+  readFileSync(join(__dirname, 'asm-selection-receipt.json'), 'utf8'),
+);
+const selectionReceiptDigest = 'sha256:' + sha256hex(canonicalize(selectionReceipt));
+const selectionReceiptRef = {
+  receipt_type: selectionReceipt.receipt_type,
+  receipt_version: selectionReceipt.receipt_version,
+  selection_id: selectionReceipt.selection_id,
+  digest: selectionReceiptDigest,
+};
+
 // --- Shared scenario ---
 const AGENT_ID = 'crewai-agent-research-001';
 const TOOL_NAME = 'execute_api_call';
@@ -66,12 +80,14 @@ const TOOL_ARGS = {
 };
 const SPEND_USD = 0.50;
 
-// --- action_ref: content hash anchoring both governance evaluations ---
-function computeActionRef(agentId, toolName, args) {
-  const input = JSON.stringify({ agent_id: agentId, args, tool: toolName });
-  return 'sha256:' + sha256hex(input);
-}
-const actionRef = computeActionRef(AGENT_ID, TOOL_NAME, TOOL_ARGS);
+// --- action_ref: the existing APS composition anchor ---
+// APS owns the canonical action identifier in this checked-in composition
+// fixture. Reuse it byte-for-byte so the two independently signed receipt
+// families actually correlate; do not mint a second hash for the same call.
+const actionRef = readFileSync(
+  join(__dirname, 'aps-receipts', 'action-ref.txt'),
+  'utf8',
+).trim();
 
 // --- Cedar policy ---
 const CEDAR_POLICY = `permit(
@@ -112,6 +128,9 @@ const policyPayload = {
     },
   },
   extensions: {
+    asm: {
+      selection_receipt: selectionReceiptRef,
+    },
     scopeblind: {
       cedar_decision: 'permit',
       cedar_diagnostics: [],
@@ -163,6 +182,9 @@ const execPayload = {
     currency: 'usd',
   },
   extensions: {
+    asm: {
+      selection_receipt: selectionReceiptRef,
+    },
     scopeblind: {
       cedar_decision: 'permit',
       policy_digest: policyDigest,
@@ -192,10 +214,12 @@ writeFileSync(join(__dirname, 'scopeblind-policy-eval.json'), JSON.stringify(pol
 writeFileSync(join(__dirname, 'scopeblind-execution.json'), JSON.stringify(execReceipt, null, 2) + '\n');
 writeFileSync(join(__dirname, 'scopeblind-pubkey.txt'), pubKeyHex + '\n');
 writeFileSync(join(__dirname, 'action-ref.txt'), actionRef + '\n');
+writeFileSync(join(__dirname, 'asm-selection-receipt-digest.txt'), selectionReceiptDigest + '\n');
 writeFileSync(join(__dirname, 'cedar-policy.cedar'), CEDAR_POLICY + '\n');
 
 console.log('Generated ScopeBlind composition test receipts:');
 console.log(`  action_ref:      ${actionRef}`);
+console.log(`  selection:       ${selectionReceiptDigest}`);
 console.log(`  public key:      ${pubKeyHex}`);
 console.log(`  policy receipt:  scopeblind-policy-eval.json`);
 console.log(`  exec receipt:    scopeblind-execution.json`);

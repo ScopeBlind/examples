@@ -1,12 +1,12 @@
 {
   "payload": {
     "spec": "draft-farley-acta-signed-receipts-01",
-    "receipt_id": "sha256:ace89c38ff7d7276b8245cc8d020a92150c6f4fd133d0b60b03d90e10e58d276",
+    "receipt_id": "sha256:1f4355395182edef4c3ecebcc8839a7dce6964c953e9ad39cfe19923818484bc",
     "type": "tool:execution",
-    "issued_at": "2026-04-08T16:10:01.974Z",
-    "issuer_id": "sb:issuer:91e4d1a4f0f0",
-    "previousReceiptHash": "sha256:178ab43edefbbe99a89e9f2249c2ff995d2ab749ef532dc4a9bf6893ed748f37",
-    "action_ref": "sha256:0985753552dfd9ca60c978d00309c844c512ab0ae20062f9bebeac826f00bbdf",
+    "issued_at": "2026-08-17T01:18:22.141Z",
+    "issuer_id": "sb:issuer:93a2146e3977",
+    "previousReceiptHash": "sha256:24fabc778fefb0c79ac250a405107339af3f6e6adeab52b90d87462adacb6e59",
+    "action_ref": "31789af0e4b00d6c3f686ee56b5b361ba4f62055a37d52f6758d671d8ff60139",
     "agentId": "crewai-agent-research-001",
     "action": {
       "tool": "execute_api_call",
@@ -23,6 +23,14 @@
       "currency": "usd"
     },
     "extensions": {
+      "asm": {
+        "selection_receipt": {
+          "receipt_type": "selection",
+          "receipt_version": "0.1",
+          "selection_id": "5d7e46e7-3997-4db3-90fb-507f4a6d2b62",
+          "digest": "sha256:4c4a9ebb847ff07721862a0f7e214c64606704b1ac31cac5cd6451488e6632e0"
+        }
+      },
       "scopeblind": {
         "cedar_decision": "permit",
         "policy_digest": "sha256:f381122b9014899cffcd2b9ead006ba8f2e2881121010dfef903f5a5db307b3f",
@@ -36,7 +44,7 @@
   },
   "signature": {
     "alg": "EdDSA",
-    "kid": "sb:issuer:91e4d1a4f0f0",
-    "sig": "8159dc4e7cacfdf3e78706f50c3f837729e65c898fb458a2b252d531679064b23939431dcdb38d8a2024697c4672e9ce396947c4f5b6432c2570682cd368580a"
+    "kid": "sb:issuer:93a2146e3977",
+    "sig": "8a80fd24f32a5b60a74b598943351409848ff450de5ab736e150db385eebd63e28c7a6f2cc9d7adc716085072d6b3b748c06450c1ef4d667c5e3a4a67f4e3206"
   }
 }

@@ -1,8 +1,8 @@
-# Composition Test: ScopeBlind + APS
+# Composition Test: ASM + ScopeBlind + APS
 
-**One tool call. Two governance evaluations. One verifier.**
+**One service choice. One tool call. Two governance evaluations. One verifier.**
 
-This test demonstrates the composition model for multi-engine agent governance: a single CrewAI tool call (`execute_api_call`) is independently evaluated by two different governance engines (ScopeBlind Cedar policy + APS delegation scope), both producing Ed25519-signed receipts in the IETF draft envelope format, both verifiable by the same offline tool.
+This test demonstrates the composition model for service selection and multi-engine agent governance. ASM records why the fixture chooses one eligible API route before the call. A single CrewAI tool call (`execute_api_call`) is then independently evaluated by two different governance engines (ScopeBlind Cedar policy + APS delegation scope), both producing Ed25519-signed receipts in the IETF draft envelope format and both verifiable by the same offline tool.
 
 ## Scenario
 
@@ -10,6 +10,11 @@ A CrewAI research agent calls `execute_api_call`:
 - **Tool:** POST to `api.openrouter.ai` (paid API)
 - **Spend:** $0.50
 - **Model:** `anthropic/claude-sonnet-4-20250514`
+
+### ASM selection (pre-call)
+- Checks: cloud invocability, required chat/API functions, fixture price, and approval boundary
+- Produces: an unsigned Selection Receipt that pins both candidate manifests by digest
+- Authority: explains the choice only; it is not an authorization, execution, or payment receipt
 
 ### APS evaluation (delegation + scope)
 - Checks: delegation scope includes `tools:api_call`, spend within $500 budget
@@ -20,12 +25,13 @@ A CrewAI research agent calls `execute_api_call`:
 - Produces: policy evaluation receipt + execution receipt with `extensions.scopeblind`
 
 ### Correlation
-Both governance evaluations reference the same `action_ref` -- a SHA-256 hash of the canonical tool invocation (`agent_id + tool_name + args`). A verifier links the evaluations by this hash without needing to understand either engine's internals.
+Both governance evaluations reference the same `action_ref` -- a SHA-256 hash of the canonical tool invocation (`agent_id + tool_name + args`). ScopeBlind's signed policy and execution receipts also carry `extensions.asm.selection_receipt`, which references the exact pre-call Selection Receipt digest. A verifier can therefore link **why this route** to **was this call allowed** and **what executed** without making any receipt authoritative for another event.
 
 ## Receipts
 
 | File | Engine | Type | Chain |
 |------|--------|------|-------|
+| `asm-selection-receipt.json` | ASM | Pre-call selection explanation (unsigned v0.1) | Pins the two fixture manifests |
 | `scopeblind-policy-eval.json` | ScopeBlind | Cedar policy evaluation | First in chain |
 | `scopeblind-execution.json` | ScopeBlind | Tool execution result | Links to policy eval |
 
@@ -47,6 +53,16 @@ npx @veritasacta/verify@0.2.5 ../aps-test-vectors/receipt-commerce.json --key $A
 
 All four should return exit code 0 (VALID).
 
+Validate the two scenario-local selection manifests independently:
+
+```bash
+python -m pip install "asm-protocol==0.5.2"
+asm-lint asm-openrouter-manifest.json --as-of 2026-08-17 --fail-on not-ready
+asm-lint asm-direct-manifest.json --as-of 2026-08-17 --fail-on not-ready
+```
+
+These manifests deliberately describe fixed fixture values, not current provider pricing.
+
 ## Verify all at once
 
 ```bash
@@ -57,11 +73,13 @@ bash verify-all.sh
 
 1. **Format convergence.** Two independent implementations (APS ProxyGateway + ScopeBlind protect-mcp) produce receipts that verify against the same tool, without coordination on the verification path.
 
-2. **Extension isolation.** `extensions.scopeblind` carries Cedar policy results. `extensions.aps` carries delegation chains and spend tracking. Both are covered by the envelope signature (tamper-evident) but opaque to the other engine's verifier.
+2. **Event authority stays separate.** The unsigned ASM receipt explains provider selection. ScopeBlind and APS remain authoritative for their own signed policy and execution events. Referencing the Selection Receipt digest does not turn ASM into an authorization or settlement proof.
 
-3. **Composable governance.** An agent can be simultaneously governed by APS (delegation scope, spend limits) and ScopeBlind (Cedar policy, rate limits) without either system needing to know about the other. The `action_ref` is the only shared anchor.
+3. **Extension isolation.** `extensions.asm` carries only a Selection Receipt reference, `extensions.scopeblind` carries Cedar results, and `extensions.aps` carries delegation chains and spend tracking. Signed extensions are tamper-evident but remain semantically owned by their issuers.
 
-4. **IETF draft as interop baseline.** Both systems reference `draft-farley-acta-signed-receipts-01`. The draft defines the envelope; extensions carry engine-specific data.
+4. **Composable governance.** An agent can be simultaneously selected by a local ASM policy and governed by APS and ScopeBlind without any engine reproducing another engine's facts.
+
+5. **IETF draft as interop baseline.** The governance systems reference `draft-farley-acta-signed-receipts-01`. The draft defines their signed envelope; the ASM Selection Receipt remains a separate, digest-linked pre-call artifact.
 
 ## Generate fresh receipts
 
@@ -69,7 +87,7 @@ bash verify-all.sh
 node generate-receipts.mjs
 ```
 
-This generates new Ed25519 keys and fresh receipts for the scenario. The `action_ref` is deterministic for the same tool invocation.
+This generates new Ed25519 keys and fresh governance receipts for the scenario. The `action_ref` and Selection Receipt digest are deterministic while their input files remain unchanged.
 
 ## Cedar policy used
 
@@ -95,3 +113,4 @@ Policy digest included in every ScopeBlind receipt. If the policy changes, the d
 - [@veritasacta/verify](https://npmjs.com/package/@veritasacta/verify) (Apache-2.0)
 - [protect-mcp](https://npmjs.com/package/protect-mcp) (MIT)
 - [agent-passport-system](https://npmjs.com/package/agent-passport-system)
+- [ASM Selection Receipt v0.1](https://github.com/YE-YI7/asm-spec/blob/main/docs/specs/selection-receipt.md)
