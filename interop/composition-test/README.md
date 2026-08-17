@@ -25,7 +25,7 @@ A CrewAI research agent calls `execute_api_call`:
 - Produces: policy evaluation receipt + execution receipt with `extensions.scopeblind`
 
 ### Correlation
-Both governance evaluations reference the same `action_ref` -- a SHA-256 hash of the canonical tool invocation (`agent_id + tool_name + args`). Their signed `extensions.asm.selection_receipt` blocks also reference the exact pre-call Selection Receipt digest. A verifier can therefore link **why this route** to **was this call allowed** and **what executed** without making any receipt authoritative for another event.
+Both governance evaluations reference the same `action_ref` -- a SHA-256 hash of the canonical tool invocation (`agent_id + tool_name + args`). ScopeBlind's signed policy and execution receipts also carry `extensions.asm.selection_receipt`, which references the exact pre-call Selection Receipt digest. A verifier can therefore link **why this route** to **was this call allowed** and **what executed** without making any receipt authoritative for another event.
 
 ## Receipts
 
