@@ -1,0 +1,47 @@
+{
+  "receipt_type": "selection",
+  "receipt_version": "0.1",
+  "selection_id": "5d7e46e7-3997-4db3-90fb-507f4a6d2b62",
+  "issued_at": "2026-08-17T00:00:00Z",
+  "selector": {
+    "name": "asm-protocol/0.5.2",
+    "policy": "gate: cloud agent-operable route with chat_completion and paid_api_call; rank: fixture cost within the approved per-call cap"
+  },
+  "request": {
+    "task": "execute the fixed paid chat-completion call used by the ScopeBlind composition test",
+    "taxonomy": "ai.llm.chat",
+    "agent_reach": "cloud",
+    "user_platform": "any",
+    "required_functions": ["chat_completion", "paid_api_call"],
+    "require_approval_for": ["financial_charge"],
+    "max_cost_usd": 0.5
+  },
+  "evidence": [
+    {
+      "service_id": "scopeblind-fixture/openrouter-route@1.0",
+      "manifest_digest": "sha256:57d3680b15b19d675ba11e125be77fc8072f12ba6754725a25ebc98b08481c3a"
+    },
+    {
+      "service_id": "scopeblind-fixture/direct-provider-route@1.0",
+      "manifest_digest": "sha256:3f1c9300151453bc66fb4b3b4fe7aaf9c87425cefc9b1458c479baf775bc160f"
+    }
+  ],
+  "selected": {
+    "service_id": "scopeblind-fixture/openrouter-route@1.0",
+    "display_name": "OpenRouter route (composition fixture)",
+    "interface": "rest_api",
+    "reach": "cloud"
+  },
+  "selection_reason": "Both fixture routes are eligible; the OpenRouter route matches the approved $0.50 per-call cap while the $0.80 alternative does not.",
+  "risk_class": "critical",
+  "approval_required": true,
+  "side_effects": ["external_api_call", "network_access", "financial_charge"],
+  "alternatives": [],
+  "rejected": [
+    {
+      "service": "Direct provider route (composition fixture)",
+      "service_id": "scopeblind-fixture/direct-provider-route@1.0",
+      "reason": "fixture cost $0.80 exceeds max_cost_usd $0.50"
+    }
+  ]
+}

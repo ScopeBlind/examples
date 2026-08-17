@@ -1,0 +1,56 @@
+{
+  "asm_version": "0.3",
+  "service_id": "scopeblind-fixture/direct-provider-route@1.0",
+  "taxonomy": "ai.llm.chat",
+  "display_name": "Direct provider route (composition fixture)",
+  "provenance": {
+    "source_url": "https://github.com/ScopeBlind/examples/tree/main/interop/composition-test",
+    "retrieved_at": "2026-08-17T00:00:00Z",
+    "last_verified_at": "2026-08-17T00:00:00Z",
+    "verification_status": "self_reported",
+    "notes": "Scenario-local alternative used only to make the selection decision reproducible."
+  },
+  "capabilities": {
+    "description": "Alternative route for the same fixed chat-completion scenario.",
+    "functions": ["chat_completion", "paid_api_call"],
+    "input_modalities": ["text"],
+    "output_modalities": ["text"]
+  },
+  "pricing": {
+    "billing_dimensions": [
+      {
+        "dimension": "fixture_call",
+        "unit": "per_1",
+        "cost_per_unit": 0.8,
+        "currency": "USD"
+      }
+    ]
+  },
+  "operational_constraints": {
+    "risk_class": "critical",
+    "side_effects": ["external_api_call", "network_access", "financial_charge"],
+    "approval": {
+      "required": "conditional",
+      "conditions": ["financial_charge"]
+    },
+    "spend_caps": {
+      "per_call_usd": 0.8,
+      "currency": "USD"
+    },
+    "receipt_required": true,
+    "policy_notes": "The $0.80 value belongs to this fixed composition scenario."
+  },
+  "invocation": {
+    "interface": "rest_api",
+    "reach": "cloud",
+    "agent_operable": true,
+    "auth_to_invoke": "api_token",
+    "agent_completable_setup": false,
+    "setup_requires": ["account_creation", "api_key_request"],
+    "platforms": ["any"]
+  },
+  "usage_terms": {
+    "automation_allowed": "conditional",
+    "notes": "Test fixture only; callers remain responsible for provider terms."
+  }
+}
